@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-menu-button slot="start"></ion-menu-button>
+    <ion-title>details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+      <ion-grid>
+        <ion-row>
+          <ion-label> Appoinment Patientname: {{detailedAppoinment.Patientname}} </ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-label> Appoinment Speciality: {{detailedAppoinment.speciality}} </ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-label> Appoinment startdatetime: {{detailedAppoinment.startdatetime}} </ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-label> Appoinment enddatetime: {{detailedAppoinment.enddatetime}} </ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-label> Appoinment birthdate: {{detailedAppoinment.Birthdate}} </ion-label>
+        </ion-row>
+        <ion-row>
+            <ion-label> Appoinment Age: {{detailedAppoinment.Age}} </ion-label>
+          </ion-row>
+          <ion-row>
+            <ion-label> Appoinment Appdescription: {{detailedAppoinment.description}} </ion-label>
+          </ion-row>
+          <ion-row>
+            <ion-label> Appoinment Day: {{detailedAppoinment.day}} </ion-label>
+          </ion-row>
+      </ion-grid>  
+ <!-- ============={{detailedAppoinment | json}} -->
+</ion-content>

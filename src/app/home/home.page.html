@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-menu-button slot="start"></ion-menu-button>
+    <ion-title>home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card *ngFor="let App of groupedappoinment | keyvalue">
+      <h2>day: {{App.key}}</h2>
+      <ion-card *ngFor="let Appoinment of App.value">
+        <ion-item detail="false" (click)="detail(Appoinment.detailurl,Appoinment)">
+            <!-- [routerLink]="[detailpageUrl]"  routerDirection="root" [state]="Appoinment.fullurl"  -->
+          <ion-grid>
+            <ion-row>
+              <ion-label> Appoinment url: {{Appoinment.detailurl}} </ion-label>
+            </ion-row>
+            <ion-row>
+              <ion-label> Startdate: {{Appoinment.startdatetime}} </ion-label>
+            </ion-row>
+            <ion-row>
+              <ion-label> Patient Name: {{Appoinment.Patientname}} </ion-label>
+            </ion-row>
+            <ion-row>
+              <ion-label> Practioner Name : {{Appoinment.Practionername}} </ion-label>
+            </ion-row>
+            
+          </ion-grid>
+        </ion-item>
+      </ion-card>
+    </ion-card>
+</ion-content>
