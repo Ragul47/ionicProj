@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
-import { AppoinmentgetService } from 'src/app/services/appoinmentget.service';
 import { Appoinment } from 'src/app/modal/appoinmentlistmodel';
 
 @Component({
@@ -13,17 +10,20 @@ export class DetailsPage implements OnInit {
   url: any;
   data: '';
   detailedAppoinment: Appoinment;
-  constructor(private activatedRoute: ActivatedRoute,
-    private Appoinmentget: AppoinmentgetService) {
-     // this.practionerget.getDetailPractioner(this.practionerget.practionerUrl)
-//      this.Appoinmentget.getAppoinmentDetail(this.data).subscribe( (data) => {
-//        this.detailedAppoinment = data;
- 
-//  });
+  constructor() {
      }
 
   ngOnInit() {
   this.detailedAppoinment=JSON.parse(localStorage.getItem('data'))
+  }
+  openTab(latitude: string,longitude: string){
+    if(latitude && longitude){
+      let url = 'https://www.google.com/maps/place/'+latitude+','+latitude;
+      window.open(url,'_blank');
+    }
+    else{
+      window.open('https://www.google.com/maps/place/13.039682, 80.279376','_blank');
+    }
   }
 
 }

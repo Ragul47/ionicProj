@@ -1,15 +1,24 @@
 export class Appoinment {
     detailurl: string;
+    appoinmentId: string;
+
     Patientname: string;
-   
-   startdatetime:any;
-   enddatetime: any;
-   Practionername:string;
-   locationname:string;
-   Age:any;
-   Birthdate:any;
-   AppDescription:string;
-   speciality:string;
-   day:any;
-   description: string;
+    patientId: string;
+
+    Practionername:string;
+    PractionerId: string;
+
+    locationname:string;
+    locationId: string;
+    latitude: string;
+    longitude: string;
+
+    startdatetime:any;
+    enddatetime: any;
+    
+    Age:any;
+    Birthdate:string;
+    speciality:string;
+    day:any;
+    description: string;
 }

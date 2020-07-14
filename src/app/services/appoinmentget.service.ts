@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, forkJoin } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 import { Appoinment } from '../modal/appoinmentlistmodel'
-// import { HttpClient, HttpHeaders, HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,72 +15,111 @@ export class AppoinmentgetService {
 
   Appoinmentlist: Appoinment[] = [];
   AppoinmentUrl: string = '';
-  appoinmentDetail: Appoinment = {
-    detailurl: '',
-    Patientname: '',
-   
-   startdatetime:'',
-   enddatetime: '',
-   Practionername:'',
-   locationname:'',
-   Age:'',
-   Birthdate:'',
-   AppDescription:'',
-   speciality:'',
-   day:'',
-   description: ''
-  };
   appoinmentDet: Appoinment;
-  
+
 
   constructor(
     private http: HttpClient) { }
 
   public getAppoinment(data: any): Observable<any> {
     this.Appoinmentlist = [];
-    return this.http.get('http://hapi.fhir.org/baseR4/Appointment?_pretty=true').pipe(map((data: any) => {
+
+    let url = 'http://hapi.fhir.org/baseR4/Appointment?_include=Appointment:location&_include=Appointment:patient&_include=Appointment:practitioner&_pretty=true';
+    return this.http.get(url).pipe(map((data: any) => {
       try {
-        let responseJSon = data;
 
         if (data && data.entry) {
           data.entry.forEach((appoinment, index) => {
-              let Appoinment1: Appoinment = {
-                detailurl: '',
+            let Appoinment1: Appoinment = {
+              detailurl: '',
+              appoinmentId: '',
 
-                Patientname: '',
-                speciality:'',
+              Patientname: '',
+              patientId: '',
 
-                startdatetime: '',
-                enddatetime: '',
-                Age:'',
-                Birthdate:'',
-                AppDescription:'',
-                day:'',
+              Practionername: '',
+              PractionerId:'',
 
-                Practionername: '',
-                locationname: '',
+              locationname: 'unknown', 
+              locationId: '',
+              latitude: '',
+              longitude: '',
 
-                description:''
+              startdatetime: '',
+              enddatetime: '',
 
-              }
-              Appoinment1.detailurl = appoinment.fullUrl;
-              appoinment = appoinment.resource;
+              Age: 'unknown',
+              Birthdate: 'unknown',
+              day: '',
+              speciality: 'unknown',
+              description: 'known'
+
+            }
+            Appoinment1.detailurl = appoinment.fullUrl;
+            appoinment = appoinment.resource;
+            if(appoinment.resourceType == 'Appointment'){
+
+              Appoinment1.appoinmentId = appoinment.id;
 
               Appoinment1.startdatetime = appoinment.start ? appoinment.start : '';
-              Appoinment1.Patientname= appoinment && appoinment.participant && appoinment.participant[0].actor && appoinment.participant[0].actor.display ? appoinment.participant[0].actor.display : '';
-              Appoinment1.Practionername=appoinment && appoinment.participant && appoinment.participant[1].actor && appoinment.participant[1].actor.display ? appoinment.participant[1].actor.display : '';
-             
-              let datee = new  Date (Appoinment1.startdatetime);
+              Appoinment1.enddatetime = appoinment.end ? appoinment.end : '';
 
-              Appoinment1.description = appoinment.description;
+              let patapp = appoinment.participant.find(ext => ext.actor.reference.includes('Patient'));
+              let patref = patapp.actor.reference+ '';
+              let patid = patref.split('/');
+              Appoinment1.patientId = patid[1] ? patid[1]:'';
 
-              
-           
+              let practapp = appoinment.participant.find(ext => ext.actor.reference.includes('Practitioner'));
+              let practref = practapp.actor.reference+ '';
+              let practid = practref.split('/');
+              Appoinment1.PractionerId =practid?practid[1]:'';
+
+              let locationapp = appoinment.participant.find(ext => ext.actor.reference.includes('Practitioner'));
+              let locationref = locationapp.actor.reference+ '';
+              let locationid = locationref.split('/');
+              Appoinment1.locationId = locationid?locationid[1]:'';
+
+              Appoinment1.locationname = 'unknown'
+
+              let datee = new Date(Appoinment1.startdatetime);
               var today = (datee).getDay();
-              Appoinment1.day=this.getDay(today);
+              Appoinment1.day = this.getDay(today);
+              Appoinment1.description = appoinment.description? appoinment.description :'unknown';
 
               this.Appoinmentlist.push(Appoinment1);
 
+            }
+            else if (appoinment.resourceType == 'Patient'){
+              let index = this.Appoinmentlist.findIndex(x=>x.patientId === appoinment.id);
+              if(index>=0){
+                let familynamme =  appoinment.name && appoinment.name[0] && appoinment.name[0].family ? appoinment.name[0].family : '';
+                let forename = appoinment.name && appoinment.name[0] && appoinment.name[0].given && appoinment.name[0].given[0] && appoinment.name[0].given[0] ? appoinment.name[0].given[0] : ''
+                let surname = appoinment.name && appoinment.name[0] && appoinment.name[0].given && appoinment.name[0].given[0] && appoinment.name[0].given[1] ? appoinment.name[0].given[1] : ''
+                let patientname = familynamme+' '+forename+' '+surname;
+                let birthDate = appoinment.birthDate;
+                this.Appoinmentlist[index].Patientname = patientname;
+                this.Appoinmentlist[index].Birthdate = birthDate ? birthDate : 'unknown';
+              }
+            }
+            else if(appoinment.resourceType == 'Practitioner'){
+              let index = this.Appoinmentlist.findIndex(x=>x.PractionerId === appoinment.id);
+              if(index>=0){
+                let familynamme =  appoinment.name && appoinment.name[0] && appoinment.name[0].family ? appoinment.name[0].family : '';
+                let forename = appoinment.name && appoinment.name[0] && appoinment.name[0].given && appoinment.name[0].given[0] && appoinment.name[0].given[0] ? appoinment.name[0].given[0] : ''
+                let surname = appoinment.name && appoinment.name[0] && appoinment.name[0].given && appoinment.name[0].given[0] && appoinment.name[0].given[1] ? appoinment.name[0].given[1] : ''
+                let Practionername = familynamme+' '+forename+' '+surname;
+                this.Appoinmentlist[index].Practionername = Practionername;
+              }
+              
+            }
+            else if(appoinment.resourceType =='Location') {
+              let index = this.Appoinmentlist.findIndex(x=>x.PractionerId === appoinment.id);
+              if(index>=0){
+
+                this.Appoinmentlist[index].latitude = appoinment.latitude ? appoinment.latitude : '';
+                this.Appoinmentlist[index].longitude = appoinment.longitude ? appoinment.longitude: '';
+              }
+            }
           });
         }
 
@@ -93,11 +132,11 @@ export class AppoinmentgetService {
     }));
   }
 
-  public getDay(date: any){
+  public getDay(date: any) {
     switch (date) {
       case 1:
-          return 'monday'
-          break;
+        return 'monday'
+        break;
       case 2:
         return 'tuesday'
         break;
@@ -118,22 +157,7 @@ export class AppoinmentgetService {
         break;
       default:
         return 'invalid'
-  }
+    }
   }
 
-
-
- 
-
-  
-public getAppoinmentDetail(data: any): Observable<any>{
-  return this.http.get(this.AppoinmentUrl).pipe(map((data: any)=>{
-  if(data){
- 
-  this.appoinmentDetail = this.appoinmentDet;
-  this.appoinmentDetail.enddatetime = data.end;
-  }
-  return this.appoinmentDetail;
-  }));
-  }
 }

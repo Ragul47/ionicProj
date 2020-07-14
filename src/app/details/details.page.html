@@ -1,38 +1,121 @@
 <ion-header>
   <ion-toolbar>
     <ion-menu-button slot="start"></ion-menu-button>
-    <ion-title>details</ion-title>
+    <ion-title> appointment details</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card class="login-box-centered" style="align-items: center; align-content: center; text-align: center;">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card>
+            <ion-item>
+              <ion-row style="width: 100%;">
+                <ion-col size = "4">
+                  <ion-label>Appoinment Patientname:</ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label>{{detailedAppoinment?.Patientname}}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-row style="width: 100%;">
+                <ion-col size = "4">
+                  <ion-label>Patientname Birthdate:</ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label>{{detailedAppoinment?.Birthdate}}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-row style="width: 100%;">
+                <ion-col size = "4">
+                  <ion-label>Appoinment Practionername:</ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label>{{detailedAppoinment?.Practionername}}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-row style="width: 100%;">
+                <ion-col size = "4">
+                  <ion-label>Appoinment Locationname</ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label>{{detailedAppoinment?.locationname}}</ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-button (click)="openTab(detailedAppoinment.latitude,detailedAppoinment.longitude)">Open Location In Maps</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-row style="width: 100%;">
+                <ion-col size = "4">
+                  <ion-label>Appoinment speciality</ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label>{{detailedAppoinment?.speciality}}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-row style="width: 100%;">
+                <ion-col size = "4">
+                  <ion-label>Appoinment Description</ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label>{{detailedAppoinment?.description}}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-row style="width: 100%;">
+                <ion-col size = "4">
+                  <ion-label>Appoinment startdatetime</ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label>{{detailedAppoinment?.startdatetime}}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-row style="width: 100%;">
+                <ion-col size = "4">
+                  <ion-label>Appoinment enddatetime</ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label>{{detailedAppoinment?.enddatetime}}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-card>
 
+        </ion-col>
 
-      <ion-grid>
-        <ion-row>
-          <ion-label> Appoinment Patientname: {{detailedAppoinment.Patientname}} </ion-label>
-        </ion-row>
-        <ion-row>
-          <ion-label> Appoinment Speciality: {{detailedAppoinment.speciality}} </ion-label>
-        </ion-row>
-        <ion-row>
-          <ion-label> Appoinment startdatetime: {{detailedAppoinment.startdatetime}} </ion-label>
-        </ion-row>
-        <ion-row>
-          <ion-label> Appoinment enddatetime: {{detailedAppoinment.enddatetime}} </ion-label>
-        </ion-row>
-        <ion-row>
-          <ion-label> Appoinment birthdate: {{detailedAppoinment.Birthdate}} </ion-label>
-        </ion-row>
-        <ion-row>
-            <ion-label> Appoinment Age: {{detailedAppoinment.Age}} </ion-label>
-          </ion-row>
-          <ion-row>
-            <ion-label> Appoinment Appdescription: {{detailedAppoinment.description}} </ion-label>
-          </ion-row>
-          <ion-row>
-            <ion-label> Appoinment Day: {{detailedAppoinment.day}} </ion-label>
-          </ion-row>
-      </ion-grid>  
- <!-- ============={{detailedAppoinment | json}} -->
+        <ion-col size="4">
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 </ion-content>
